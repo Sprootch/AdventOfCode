@@ -56,3 +56,11 @@ Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"
         let result = Day2.solve example
 
         Assert.Equal(8, result)
+        
+    [<Fact>]
+    let ``Day 2-1``() =
+        let txt = System.IO.File.ReadLines "Input\\day2.txt"
+        
+        let result = Day2.solve txt
+
+        Assert.Equal(2285, result)

@@ -11,8 +11,8 @@ type Color =
 type Game = { Id: int; Draws: Draw array }
 and Draw = { Color: Color; Number: int }
 
-let toColor str =
-    match str with
+let toColor =
+    function
     | "red" -> Red
     | "blue" -> Blue
     | "green" -> Green
@@ -24,14 +24,16 @@ let regex(line: string) =
     let color = result.Groups["color"].Value |> toColor
     { Color = color; Number = number }
 
-let parse(line: string) = line.Split(',') |> Seq.map regex
-
 let parseDraw(line: string) =
-    line.Split(';') |> Seq.collect parse |> Seq.toArray
+    line.Split(';')
+    |> Seq.collect (fun line -> line.Split(',') |> Seq.map regex)
+    |> Seq.toArray
 
 let parseGame(line: string) =
-    let number = line[5] |> string |> int
-    let draws = line[7..] |> parseDraw
+    let result = Regex.Match(line.Trim(), @"Game (?<number>\d+): (?<rest>)")
+    let number = result.Groups["number"].Value |> int
+    let idx = line.IndexOf(':') + 1
+    let draws = line[idx..] |> parseDraw
     { Id = number; Draws = draws }
 
 let validGame(game: Game) =
