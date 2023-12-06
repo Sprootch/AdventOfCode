@@ -1,6 +1,7 @@
 module Tests
 
 open System
+open System.IO
 open Xunit
 
 module Day1 =
@@ -18,7 +19,7 @@ module Day1 =
 
     [<Fact>]
     let ``Part 1``() =
-        let txt = System.IO.File.ReadLines "Input\\day1.txt"
+        let txt = File.ReadLines (Path.Combine("Input", "day1.txt"))
         let result = Day1.count txt
         Assert.Equal(55488, result)
 
@@ -56,7 +57,7 @@ module Day2 =
 
     [<Fact>]
     let ``Part 1``() =
-        let txt = System.IO.File.ReadLines "Input\\day2.txt"
+        let txt = File.ReadLines (Path.Combine("Input", "day2.txt"))
 
         let result = Day2.solve txt
 
@@ -72,7 +73,7 @@ module Day2 =
 
     [<Fact>]
     let ``Part 2``() =
-        let txt = System.IO.File.ReadLines "Input\\day2.txt"
+        let txt = File.ReadLines (Path.Combine("Input", "day2.txt"))
 
         let result = Day2.solve2 txt
 
