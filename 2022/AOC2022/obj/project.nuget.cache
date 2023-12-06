@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "dgSpecHash": "Veo6s3CTY8JQPEPHTQBp9xrszKttzCPywAkxZkGPCQi7efdg5BZi0pEgT4X4AzC+BgXI9MZB8DGvIweZEAWTPQ==",
+  "success": true,
+  "projectFilePath": "C:\\Projects\\Perso\\AdventOfCode\\2022\\AOC2022\\AOC2022.fsproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\vdelcoigne\\.nuget\\packages\\fsharp.core\\8.0.100\\fsharp.core.8.0.100.nupkg.sha512",
+    "C:\\Users\\vdelcoigne\\.nuget\\packages\\microsoft.netcore.app.ref\\7.0.14\\microsoft.netcore.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\vdelcoigne\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\7.0.14\\microsoft.windowsdesktop.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\vdelcoigne\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\7.0.14\\microsoft.aspnetcore.app.ref.7.0.14.nupkg.sha512",
+    "C:\\Users\\vdelcoigne\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\7.0.14\\microsoft.netcore.app.host.win-x64.7.0.14.nupkg.sha512"
+  ],
+  "logs": []
+}
