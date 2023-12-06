@@ -2,22 +2,10 @@ module Tests
 
 open System
 open Xunit
-open Xunit.Abstractions
 
-let day2Example =
-    "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
-Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
-Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
-Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
-Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"
-
-
-type Tests(output: ITestOutputHelper) =
-    let write result =
-        output.WriteLine $"The actual result was {result}"
-
+module Day1 =
     [<Fact>]
-    let ``Day 1-1 (example)``() =
+    let ``Part 1 (example)``() =
         let example =
             "1abc2
                  pqr3stu8vwx
@@ -29,13 +17,13 @@ type Tests(output: ITestOutputHelper) =
         Assert.Equal(142, result)
 
     [<Fact>]
-    let ``Day 1-1``() =
+    let ``Part 1``() =
         let txt = System.IO.File.ReadLines "Input\\day1.txt"
         let result = Day1.count txt
         Assert.Equal(55488, result)
 
     [<Fact>]
-    let ``Day 1-2 (example)``() =
+    let ``Part 2 (example)``() =
         let example =
             "two1nine
                  eightwothree
@@ -47,12 +35,19 @@ type Tests(output: ITestOutputHelper) =
                 .Split(Environment.NewLine)
 
         let result = Day1.count2 example
-        write result
 
         Assert.Equal(281, result)
 
+module Day2 =
+    let day2Example =
+        "Game 1: 3 blue, 4 red; 1 red, 2 green, 6 blue; 2 green
+        Game 2: 1 blue, 2 green; 3 green, 4 blue, 1 red; 1 green, 1 blue
+        Game 3: 8 green, 6 blue, 20 red; 5 blue, 4 red, 13 green; 5 green, 1 red
+        Game 4: 1 green, 3 red, 6 blue; 3 green, 6 red; 3 green, 15 blue, 14 red
+        Game 5: 6 red, 1 blue, 3 green; 2 blue, 1 red, 2 green"
+
     [<Fact>]
-    let ``Day 2-1 (example)``() =
+    let ``Part 1 (example)``() =
         let example = day2Example.Split(Environment.NewLine)
 
         let result = Day2.solve example
@@ -60,7 +55,7 @@ type Tests(output: ITestOutputHelper) =
         Assert.Equal(8, result)
 
     [<Fact>]
-    let ``Day 2-1``() =
+    let ``Part 1``() =
         let txt = System.IO.File.ReadLines "Input\\day2.txt"
 
         let result = Day2.solve txt
@@ -68,7 +63,7 @@ type Tests(output: ITestOutputHelper) =
         Assert.Equal(2285, result)
 
     [<Fact>]
-    let ``Day 2-2 (example)``() =
+    let ``Part 2 (example)``() =
         let example = day2Example.Split(Environment.NewLine)
 
         let result = Day2.solve2 example
@@ -76,7 +71,7 @@ type Tests(output: ITestOutputHelper) =
         Assert.Equal(2286, result)
 
     [<Fact>]
-    let ``Day 2-2``() =
+    let ``Part 2``() =
         let txt = System.IO.File.ReadLines "Input\\day2.txt"
 
         let result = Day2.solve2 txt
