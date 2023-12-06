@@ -44,5 +44,17 @@ let validGame(game: Game) =
         || (d.Color = Blue && d.Number > 14))
     |> not
 
+let maxColor(line: Game) =
+    let max color =
+        line.Draws
+        |> Array.filter (fun d -> d.Color = color)
+        |> Array.maxBy (fun d -> d.Number)
+        |> fun d -> d.Number
+
+    [ max Red; max Green; max Blue ] |> List.reduce (*)
+
 let solve lines =
     lines |> Seq.map parseGame |> Seq.filter validGame |> Seq.sumBy (fun g -> g.Id)
+
+let solve2 lines =
+    lines |> Seq.map parseGame |> Seq.map maxColor |> Seq.sum
