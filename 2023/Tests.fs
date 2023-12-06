@@ -19,7 +19,7 @@ module Day1 =
 
     [<Fact>]
     let ``Part 1``() =
-        let txt = File.ReadLines (Path.Combine("Input", "day1.txt"))
+        let txt = File.ReadLines(Path.Combine("Input", "day1.txt"))
         let result = Day1.count txt
         Assert.Equal(55488, result)
 
@@ -57,7 +57,7 @@ module Day2 =
 
     [<Fact>]
     let ``Part 1``() =
-        let txt = File.ReadLines (Path.Combine("Input", "day2.txt"))
+        let txt = File.ReadLines(Path.Combine("Input", "day2.txt"))
 
         let result = Day2.solve txt
 
@@ -73,8 +73,28 @@ module Day2 =
 
     [<Fact>]
     let ``Part 2``() =
-        let txt = File.ReadLines (Path.Combine("Input", "day2.txt"))
+        let txt = File.ReadLines(Path.Combine("Input", "day2.txt"))
 
         let result = Day2.solve2 txt
 
         Assert.Equal(77021, result)
+
+module Day3 =
+    let example =
+        "467..114..
+...*......
+..35..633.
+......#...
+617*......
+.....+.58.
+..592.....
+......755.
+...$.*....
+.664.598.."
+
+    [<Fact>]
+    let ``Part 1 (example)``() =
+        let example = example.Split(Environment.NewLine)
+        let result  = Day3.solve example
+        
+        Assert.Equal(4361, result)
