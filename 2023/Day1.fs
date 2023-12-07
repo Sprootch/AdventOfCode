@@ -1,6 +1,8 @@
 ﻿module Day1
 
 open System
+open System.IO
+open Xunit
 
 module Seq =
     let tap seq =
@@ -27,8 +29,42 @@ let replaceDigits(line: string) =
         .Replace("seven", "7")
         .Replace("nine", "9")
 
-let count input =
+let solve input =
     input |> Seq.map processLine |> Seq.sum
     
-let count2 input =
+let solve2 input =
     input |> Seq.map replaceDigits |> Seq.map processLine |> Seq.sum
+    
+[<Fact>]
+let ``Part 1 (example)``() =
+    let example =
+        "1abc2
+             pqr3stu8vwx
+             a1b2c3d4e5f
+             treb7uchet"
+            .Split(Environment.NewLine)
+
+    let result = solve example
+    Assert.Equal(142, result)
+
+[<Fact>]
+let ``Part 1``() =
+    let txt = File.ReadLines(Path.Combine("Input", "day1.txt"))
+    let result = solve txt
+    Assert.Equal(55488, result)
+
+[<Fact>]
+let ``Part 2 (example)``() =
+    let example =
+        "two1nine
+             eightwothree
+             abcone2threexyz
+             xtwone3four
+             4nineeightseven2
+             zoneight234
+             7pqrstsixteen"
+            .Split(Environment.NewLine)
+
+    let result = solve2 example
+
+    Assert.Equal(281, result)
