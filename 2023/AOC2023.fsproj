@@ -23,7 +23,7 @@
         </Content>
         <Compile Include="Day1.fs" />
         <Compile Include="Day2.fs" />
-        <Compile Include="Day3.fs" />
+        <None Include="Day3.fsx" />
         <Compile Include="Day4.fs" />
     </ItemGroup>
 
