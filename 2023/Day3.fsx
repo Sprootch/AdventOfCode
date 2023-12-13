@@ -26,7 +26,6 @@ type State =
 
 type Position = int * int
 
-
 let parse =
     function
     | c when c |> Char.IsDigit -> Digit(c |> string)
@@ -36,18 +35,6 @@ let parse =
 let lines =
     [ for row, line in (example |> Seq.indexed) do
           [ for col, char in line |> Seq.indexed -> ((col, row), char |> parse) ] ]
-
-// let line =
-//     [ ((0, 0), Digit "4")
-//       ((1, 0), Digit "6")
-//       ((2, 0), Digit "7")
-//       ((3, 0), Empty)
-//       ((4, 0), Empty)
-//       ((5, 0), Digit "1")
-//       ((6, 0), Digit "1")
-//       ((7, 0), Digit "4")
-//       ((8, 0), Empty)
-//       ((9, 0), Empty) ]
 
 let digit(Digit d) = d
 
@@ -81,4 +68,41 @@ let rec bundle(line: (Position * State) list) =
         let c = [ pos ], entry
         c :: (bundle t)
 
-let c = lines |> List.collect bundle 
+let bundled = lines |> List.collect bundle
+
+let symbols =
+    bundled
+    |> List.filter (fun (_, b) ->
+        match b with
+        | Symbol _ -> true
+        | _ -> false)
+    |> List.collect fst
+
+let numbers =
+    bundled
+    |> List.filter (fun (_, b) ->
+        match b with
+        | Number _ -> true
+        | _ -> false)
+
+let isTouching (position: Position) ((numberPos, _): Position list * Bundled) =
+    let x, y = position
+
+    let c = numberPos |> Set.ofList
+    let neighbours =
+        [ x - 1, y - 1
+          x, y - 1
+          x + 1, y - 1
+          x - 1, y
+          x + 1, y
+          x - 1, y + 1
+          x, y + 1
+          x + 1, y + 1 ] |> Set.ofList
+
+    let x = Set.intersect c neighbours |> Set.count
+    x <> 0
+    
+let hasSymbol  (symbolPos : Position list) (number: Position list * Bundled) =
+    symbolPos |> List.exists (fun pos -> isTouching pos number)
+    
+let parts = numbers |> List.filter (hasSymbol symbols) |> List.map snd |> List.map (fun n -> match n with | Number n -> n) |> List.sum
