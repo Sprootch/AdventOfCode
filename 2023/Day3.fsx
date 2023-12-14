@@ -1,22 +1,6 @@
 module Day3
 
 open System
-open System.IO
-
-let example =
-    """467..114..
-...*......
-..35..633.
-......#...
-617*......
-.....+.58.
-..592.....
-......755.
-...$.*....
-.664.598.."""
-        .Split("\n")
-    |> Array.map (fun s -> s.Trim())
-    |> List.ofSeq
 
 type State =
     | Symbol of string
@@ -31,7 +15,6 @@ let parse =
     | c when c = '.' -> Empty
     | c -> Symbol(c |> string)
 
-
 let digit(Digit d) = d
 
 type Bundled =
@@ -39,7 +22,23 @@ type Bundled =
     | Number of int
     | Symbol of string
 
-let rec bundle(line: (Position * State) list) =
+let isTouching (position: Position) ((numberPos, _): Position list * Bundled) =
+    let x, y = position
+
+    let c = numberPos |> Set.ofList
+
+    let neighbours =
+        [ for dx, dy in List.allPairs [ - 1 .. 1 ] [ - 1 .. + 1 ] do
+              if (dx, dy) <> (0, 0) then
+                  (dx + x, dy + y) ]
+        |> Set.ofList
+
+    Set.intersect c neighbours |> Set.isEmpty |> not
+
+let hasSymbol (symbolPos: Position list) (number: Position list * Bundled) =
+    symbolPos |> List.exists (fun pos -> isTouching pos number)
+
+let rec bundle line =
     match line with
     | [] -> []
     | (_, Digit _) :: t ->
@@ -64,56 +63,54 @@ let rec bundle(line: (Position * State) list) =
         let c = [ pos ], entry
         c :: (bundle t)
 
-let bundled =
+let solve input =
     let lines input =
         [ for row, line in (input |> Seq.indexed) do
               [ for col, char in line |> Seq.indexed -> ((col, row), char |> parse) ] ]
 
-    let example = File.ReadAllLines @"C:\Projects\Perso\AdventOfCode\2023\Input\day3.txt"
-    lines example |> List.collect bundle
+    let bundled = lines input |> List.collect bundle
 
-let symbols =
-    bundled
-    |> List.filter (fun (_, b) ->
-        match b with
-        | Symbol _ -> true
-        | _ -> false)
-    |> List.collect fst
+    let symbols =
+        bundled
+        |> List.filter (fun (_, b) ->
+            match b with
+            | Symbol _ -> true
+            | _ -> false)
+        |> List.collect fst
 
-let numbers =
-    bundled
-    |> List.filter (fun (_, b) ->
-        match b with
-        | Number _ -> true
-        | _ -> false)
+    let numbers =
+        bundled
+        |> List.filter (fun (_, b) ->
+            match b with
+            | Number _ -> true
+            | _ -> false)
 
-let isTouching (position: Position) ((numberPos, _): Position list * Bundled) =
-    let x, y = position
+    let parts =
+        numbers
+        |> List.filter (hasSymbol symbols)
+        |> List.map snd
+        |> List.map (fun n ->
+            match n with
+            | Number n -> n)
+        |> List.sum
 
-    let c = numberPos |> Set.ofList
+    parts
 
-    let neighbours =
-        [ x - 1, y - 1
-          x, y - 1
-          x + 1, y - 1
-          x - 1, y
-          x + 1, y
-          x - 1, y + 1
-          x, y + 1
-          x + 1, y + 1 ]
-        |> Set.ofList
+let example =
+    """467..114..
+...*......
+..35..633.
+......#...
+617*......
+.....+.58.
+..592.....
+......755.
+...$.*....
+.664.598.."""
+        .Split("\n")
+    |> Array.map (fun s -> s.Trim())
+    |> List.ofSeq
 
-    let x = Set.intersect c neighbours |> Set.count
-    x <> 0
+solve example
 
-let hasSymbol (symbolPos: Position list) (number: Position list * Bundled) =
-    symbolPos |> List.exists (fun pos -> isTouching pos number)
-
-let parts =
-    numbers
-    |> List.filter (hasSymbol symbols)
-    |> List.map snd
-    |> List.map (fun n ->
-        match n with
-        | Number n -> n)
-    |> List.sum
+solve (System.IO.File.ReadAllLines @"C:\Projects\Perso\AdventOfCode\2023\Input\day3.txt")
