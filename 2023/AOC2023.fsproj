@@ -25,6 +25,7 @@
         <Compile Include="Day2.fs" />
         <None Include="Day3.fsx" />
         <Compile Include="Day4.fs" />
+        <None Include="Day6.fsx" />
     </ItemGroup>
 
     <ItemGroup>
