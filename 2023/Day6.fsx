@@ -2,18 +2,18 @@ module Day6
 
 open System
 
-type Race = { Time: int; Distance: int }
+type Race = { Time: int64; Distance: int64 }
 
 let example =
-    """Time:      7  15   30
-Distance:  9  40  200"""
+    """Time:      71530
+Distance:  940200"""
 
 let input =
-    """Time:        40     82     84     92
-Distance:   233   1011   1110   1487"""
+    """Time:        40828492
+Distance:   233101111101487"""
 
 let compute(race: Race) =
-    [ for holdTime in 0 .. race.Time -> holdTime * (race.Time - holdTime) ]
+    [ for holdTime in 0L .. race.Time -> holdTime * (race.Time - holdTime) ]
     |> List.filter (fun distance -> distance > race.Distance)
     |> List.length
 
@@ -30,7 +30,7 @@ let solve(input: string) =
 
     let races =
         Array.zip times distances
-        |> Array.map (fun (t, d) -> { Time = t |> int; Distance = d |> int })
+        |> Array.map (fun (t, d) -> { Time = t |> int64; Distance = d |> int64 })
 
     races |> Array.map compute |> Array.filter (fun w -> w <> 0) |> Array.reduce (*)
 
