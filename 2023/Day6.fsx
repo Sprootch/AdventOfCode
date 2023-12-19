@@ -1,5 +1,3 @@
-module Day6
-
 open System
 
 type Race = { Time: int64; Distance: int64 }
