@@ -13,15 +13,19 @@ type Card =
     | Number of int
 
 type HandType =
-    | FiveOfAKind of Card
-    | FourOfAKind of Card
-    | FullHouse of Card*Card
-    | ThreeOfAKind of Card
-    | TwoPair of Card*Card
-    | OnePair of Card
-    | HighCard of Card
+    | FiveOfAKind
+    | FourOfAKind
+    | FullHouse
+    | ThreeOfAKind
+    | TwoPair
+    | OnePair
+    | HighCard
 
-type Hand = Card array
+type Hand =
+    { Bid: int
+      Cards: Card list
+      Type: HandType
+      Strength: int }
 
 let makeHand =
     function
@@ -32,27 +36,38 @@ let makeHand =
     | 'T' -> Number 10
     | c -> c |> string |> int |> Number
 
-let getType hand : HandType =
-    match hand with
-    | [| (card, 5) |] -> FiveOfAKind card
-    | [| (card, 4); _ |] -> FourOfAKind card
-    | [| (three, 3); (two, 2) |] -> FullHouse (three,two)
-    | [| (three, 3); _ |] -> ThreeOfAKind three
-    | [| (p1, 2); (p2, 2) |] -> TwoPair (p1, p2)
-    | [| (pair, 2); _ |] -> OnePair pair
-    | card -> HighCard (Number 2) // TODO
+let getType(cards: Card list) : HandType =
+    match cards |> List.countBy id |> List.sortByDescending snd with
+    | [ (_, 5) ] -> FiveOfAKind
+    | [ (_, 4); _ ] -> FourOfAKind
+    | [ (_, 3); (_, 2) ] -> FullHouse
+    | [ (_, 3); _; _ ] -> ThreeOfAKind
+    | [ (_, 2); (_, 2); _ ] -> TwoPair
+    | [ (_, 2); _; _; _ ] -> OnePair
+    | _ -> HighCard
+
+let getStrength =
+    function
+    | FiveOfAKind -> 6
+    | FourOfAKind -> 5
+    | FullHouse -> 4
+    | ThreeOfAKind -> 3
+    | TwoPair -> 2
+    | OnePair -> 1
+    | HighCard -> 0
 
 let createHand(line: string) =
-    let cards = line.Split(' ')[0] |> Seq.map makeHand |> Seq.toArray
+    let cards = line.Split(' ')[0] |> Seq.map makeHand |> Seq.toList
     let bid = line.Split(' ')[1] |> int
+    let type' = cards |> getType
+    let strength = type' |> getStrength
 
-    (cards |> Array.countBy id |> Array.sortByDescending snd)
+    { Bid = bid
+      Cards = cards
+      Strength = strength
+      Type = type' }
 
-let x(hand: (Card * int) array) = getType hand
-
-let hands = input.Split("\n") |> Array.map createHand
-hands |> Array.map getType
+let hands =
+    input.Split("\n") |> Array.map createHand |> Array.sortByDescending _.Strength
 
 
-let test = [| (Queen, 3); (Jack, 1); (As, 1) |] 
-test |> getType
