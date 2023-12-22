@@ -12,6 +12,14 @@ type Card =
     | Jack
     | Number of int
 
+let cardStrength =
+    function
+    | As -> 14
+    | King -> 13
+    | Queen -> 12
+    | Jack -> 11
+    | Number n -> n
+
 type HandType =
     | FiveOfAKind
     | FourOfAKind
@@ -67,7 +75,47 @@ let createHand(line: string) =
       Strength = strength
       Type = type' }
 
-let hands =
-    input.Split("\n") |> Array.map createHand |> Array.sortByDescending _.Strength
 
+let rec isPlusFort cards =
+    match cards with
+    | [] -> false
+    | (c1, c2) :: t ->
+        let s1 = c1 |> cardStrength
+        let s2 = c2 |> cardStrength
+        if (s1 = s2) then (isPlusFort t) else s1 > s2
 
+let rec isMoinsFort cards =
+    match cards with
+    | [] -> false
+    | (c1, c2) :: t ->
+        let s1 = c1 |> cardStrength
+        let s2 = c2 |> cardStrength
+        if (s1 = s2) then (isMoinsFort t) else s1 < s2
+        
+let isGreater card1 card2 =
+    if card1.Strength > card2.Strength then
+        true
+    else if card2.Strength > card1.Strength then
+        false
+    else
+        card1.Cards |> List.zip card2.Cards |> isPlusFort
+
+let isLowerOrEqual card1 card2 =
+    if card1.Strength < card2.Strength then
+        true
+    else if card2.Strength > card1.Strength then
+        false
+    else
+        card1.Cards |> List.zip card2.Cards |> isMoinsFort
+        
+let rec quicksort list =
+    match list with
+    | [] -> []
+    | h :: t ->
+        let lesser = t |> List.filter (isGreater h)
+        let greater = t |> List.filter (isLowerOrEqual h)
+        (quicksort lesser) @ [ h ] @ (quicksort greater)
+
+let hands = input.Split("\n") |> Array.map createHand |> Array.toList //|> Array.sortByDescending _.Strength |> Array.toList
+
+hands |> quicksort
