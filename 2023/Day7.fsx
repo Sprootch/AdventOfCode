@@ -42,7 +42,7 @@ let makeHand =
     | 'Q' -> Queen
     | 'J' -> Jack
     | 'T' -> Number 10
-    | c -> c |> string |> int |> Number
+    | n -> n |> string |> int |> Number
 
 let getType(cards: Card list) : HandType =
     match cards |> List.countBy id |> List.sortByDescending snd with
@@ -75,47 +75,32 @@ let createHand(line: string) =
       Strength = strength
       Type = type' }
 
+let hands =
+    input.Split("\n")
+    |> Array.map createHand
+    |> Array.sortByDescending _.Strength
+    |> Array.toList
 
-let rec isPlusFort cards =
-    match cards with
-    | [] -> false
-    | (c1, c2) :: t ->
-        let s1 = c1 |> cardStrength
-        let s2 = c2 |> cardStrength
-        if (s1 = s2) then (isPlusFort t) else s1 > s2
+let compareCard(a, b) =
+    let s1 = a |> cardStrength
+    let s2 = b |> cardStrength
+    compare s1 s2
 
-let rec isMoinsFort cards =
-    match cards with
-    | [] -> false
-    | (c1, c2) :: t ->
-        let s1 = c1 |> cardStrength
-        let s2 = c2 |> cardStrength
-        if (s1 = s2) then (isMoinsFort t) else s1 < s2
-        
-let isGreater card1 card2 =
-    if card1.Strength > card2.Strength then
-        true
-    else if card2.Strength > card1.Strength then
-        false
+let comparer a b =
+    if (a.Strength > b.Strength) then
+        -1
+    else if (b.Strength > a.Strength) then
+        1
     else
-        card1.Cards |> List.zip card2.Cards |> isPlusFort
+        a.Cards
+        |> List.zip b.Cards
+        |> List.map compareCard
+        |> List.find (fun z -> z <> 0)
 
-let isLowerOrEqual card1 card2 =
-    if card1.Strength < card2.Strength then
-        true
-    else if card2.Strength > card1.Strength then
-        false
-    else
-        card1.Cards |> List.zip card2.Cards |> isMoinsFort
-        
-let rec quicksort list =
-    match list with
-    | [] -> []
-    | h :: t ->
-        let lesser = t |> List.filter (isGreater h)
-        let greater = t |> List.filter (isLowerOrEqual h)
-        (quicksort lesser) @ [ h ] @ (quicksort greater)
-
-let hands = input.Split("\n") |> Array.map createHand |> Array.toList //|> Array.sortByDescending _.Strength |> Array.toList
-
-hands |> quicksort
+let sorted =
+    hands
+    |> List.sortWith comparer
+    |> List.rev
+    |> List.indexed
+    |> List.map (fun (idx, el) -> (idx + 1) * el.Bid)
+    |> List.sum
