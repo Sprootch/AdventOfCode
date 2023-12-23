@@ -1,10 +1,3 @@
-let input =
-    """32T3K 765
-T55J5 684
-KK677 28
-KTJJT 220
-QQQJA 483"""
-
 type Card =
     | As
     | King
@@ -75,6 +68,12 @@ let createHand(line: string) =
       Strength = strength
       Type = type' }
 
+let input = """32T3K 765
+T55J5 684
+KK677 28
+KTJJT 220
+QQQJA 483"""
+
 let hands =
     input.Split("\n")
     |> Array.map createHand
@@ -84,13 +83,13 @@ let hands =
 let compareCard(a, b) =
     let s1 = a |> cardStrength
     let s2 = b |> cardStrength
-    compare s1 s2
+    compare s2 s1
 
 let comparer a b =
     if (a.Strength > b.Strength) then
-        -1
-    else if (b.Strength > a.Strength) then
         1
+    else if (b.Strength > a.Strength) then
+        -1
     else
         a.Cards
         |> List.zip b.Cards
@@ -100,7 +99,6 @@ let comparer a b =
 let sorted =
     hands
     |> List.sortWith comparer
-    |> List.rev
     |> List.indexed
     |> List.map (fun (idx, el) -> (idx + 1) * el.Bid)
     |> List.sum
