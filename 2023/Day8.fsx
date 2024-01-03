@@ -24,9 +24,11 @@ let makeNodes(lines: string array) =
         let left = line[7..9]
         let right = line[12..14]
 
-        { Value = value
-          Right = right
-          Left = left })
+        (value,
+         { Value = value
+           Right = right
+           Left = left }))
+    |> Map.ofArray
 
 let navigate node nodes direction =
     let value =
@@ -34,16 +36,16 @@ let navigate node nodes direction =
         | Left -> node.Left
         | Right -> node.Right
 
-    nodes |> Array.find (fun n -> n.Value = value)
+    nodes |> Map.find value
 
-let rec traverse (node: Node) (nodes: Node array) (directions: Direction seq) (count: int) =
+let rec traverse node nodes directions count =
     if node.Value = "ZZZ" then
         count
     else
         let direction = directions |> Seq.head
-        printfn $"%s{node.Value} -> %A{direction}"
+        // printfn $"%s{node.Value} -> %A{direction}"
         let nextNode = navigate node nodes direction
-        printfn $"Next node is %s{nextNode.Value}"
+        // printfn $"Next node is %s{nextNode.Value}"
         traverse nextNode nodes (directions |> Seq.tail) (count + 1)
 
 let example =
@@ -55,18 +57,12 @@ ZZZ = (ZZZ, ZZZ)"""
 
 let lines = File.ReadAllLines(Path.Combine("2023", "Input", "day8.txt"))
 
-// let lines = input.Split("\n")
 let directions = lines[0] |> makeInstructions
 
 let nodes = lines[2..] |> makeNodes
 
-let generateDirections index =
-    // let directions = [ Left; Left; Right ]
-    directions[index % directions.Length]
+let generator =
+    Seq.initInfinite (fun index -> directions[index % directions.Length])
 
-let generator = Seq.initInfinite generateDirections
-
-// generator |> Seq.take 20 |> Seq.toList |> List.iter (printfn "%A")
-
-let firstNode = nodes |> Array.head
+let firstNode = nodes["AAA"]
 traverse firstNode nodes generator 0
