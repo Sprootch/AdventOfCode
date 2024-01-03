@@ -1,7 +1,7 @@
 type Node =
-    { Left: Node option
-      Right: Node option
-      Value: string }
+    { Value: string
+      Left: string
+      Right: string }
 
 type Direction =
     | Left
@@ -15,26 +15,23 @@ let makeInstructions(line: string) : Direction list =
         | _ -> failwith "invalid direction")
     |> Seq.toList
 
-let makeNodes(lines: string array) =
-    { Value = "AAA"
-      Left = None
-      Right = None }
+let navigate node nodes direction =
+    let value =
+        match direction with
+        | Left -> node.Left
+        | Right -> node.Right
 
-let navigate node =
-    function
-    | Left -> node.Left
-    | Right -> node.Right
+    nodes |> List.find (fun n -> n.Value = value)
 
-let rec traverse (node: Node) (directions: Direction seq) (count:int) =
-    if node.Value = "ZZZ" then count
+let rec traverse (node: Node) (nodes: Node list) (directions: Direction seq) (count: int) =
+    if node.Value = "ZZZ" then
+        count
     else
         let direction = directions |> Seq.head
-        let nextNode = navigate node direction
-        match nextNode with
-        | None -> count
-        | Some n -> traverse n (directions |> Seq.tail) (count+1)
-    
-let solve input = 0
+        // printfn $"%s{node.Value} -> %A{direction}"
+        let nextNode = navigate node nodes direction
+        // printfn $"Next node is %s{nextNode.Value}"
+        traverse nextNode nodes (directions |> Seq.tail) (count + 1)
 
 let example =
     """RL
@@ -50,43 +47,32 @@ ZZZ = (ZZZ, ZZZ)"""
 let lines = example.Split("\n")
 lines[0] |> makeInstructions
 
-lines[2..] |> makeNodes
+// lines[2..] |> makeNodes
 
 let zzz =
     { Value = "ZZZ"
-      Left = None
-      Right = None }
-
-let ggg =
-    { Value = "GGG"
-      Left = None
-      Right = None }
-
-let ccc =
-    { Value = "CCC"
-      Left = Some zzz
-      Right = Some ggg }
-
-let bbb =
-    { Value = "BBB"
-      Left = Some ggg
-      Right = Some ggg }
+      Left = "ZZZ"
+      Right = "ZZZ" }
 
 let aaa =
     { Value = "AAA"
-      Left = Some bbb
-      Right = Some ccc }
+      Right = "BBB"
+      Left = "BBB" }
 
-let nodes = [ aaa; bbb; ccc; ggg; zzz ]
+let bbb =
+    { Value = "BBB"
+      Left = "AAA"
+      Right = "ZZZ" }
+
+let nodes = [ aaa; bbb; zzz ]
 
 let generateDirections index =
-    let directions = [ Left; Left; Right; ]
+    let directions = [ Left; Left; Right ]
     directions[index % directions.Length]
 
 let generator = Seq.initInfinite generateDirections
-    
-// generator |> Seq.take 20 |> Seq.toList |> List.iter (printfn "%A") 
 
-traverse (nodes |> List.head) generator 0
+// generator |> Seq.take 20 |> Seq.toList |> List.iter (printfn "%A")
 
-
+let firstNode = nodes |> List.head
+traverse firstNode nodes generator 0
