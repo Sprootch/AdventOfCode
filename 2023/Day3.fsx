@@ -108,7 +108,7 @@ let example =
 ...$.*....
 .664.598.."""
         .Split("\n")
-    |> Array.map (fun s -> s.Trim())
+    |> Array.map (_.Trim())
     |> List.ofSeq
 
 solve example
