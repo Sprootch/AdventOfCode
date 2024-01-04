@@ -68,7 +68,8 @@ let generator =
 let firstNode = nodes["AAA"]
 traverse firstNode nodes generator 0
 
-let regex = @"\((?<value>\w{3})\) = \((?<left>\w{3}), (?<right>\w{3})\)";;
-Regex.Match("BBB = (AAA, ZZZ)", regex)
 
-Regex.Match("BBB = (AAA, ZZZ)", @"(\w{3}) = \(\w{3}, \w{3}\)")
+let groups = Regex.Match("BBB = (AAA, ZZZ)", @"(?<Value>\w{3}) = \((?<Left>\w{3}), (?<Right>\w{3})", RegexOptions.Compiled).Groups
+groups["Value"]
+groups["Left"]
+
