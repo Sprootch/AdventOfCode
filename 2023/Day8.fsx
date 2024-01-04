@@ -1,4 +1,5 @@
 open System.IO
+open System.Text.RegularExpressions
 
 type Node =
     { Value: string
@@ -66,3 +67,8 @@ let generator =
 
 let firstNode = nodes["AAA"]
 traverse firstNode nodes generator 0
+
+let regex = @"\((?<value>\w{3})\) = \((?<left>\w{3}), (?<right>\w{3})\)";;
+Regex.Match("BBB = (AAA, ZZZ)", regex)
+
+Regex.Match("BBB = (AAA, ZZZ)", @"(\w{3}) = \(\w{3}, \w{3}\)")
