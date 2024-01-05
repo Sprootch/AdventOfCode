@@ -1,4 +1,5 @@
 open System.IO
+open System.Text.RegularExpressions
 
 type Node =
     { Value: string
@@ -66,3 +67,9 @@ let generator =
 
 let firstNode = nodes["AAA"]
 traverse firstNode nodes generator 0
+
+
+let groups = Regex.Match("BBB = (AAA, ZZZ)", @"(?<Value>\w{3}) = \((?<Left>\w{3}), (?<Right>\w{3})", RegexOptions.Compiled).Groups
+groups["Value"]
+groups["Left"]
+
