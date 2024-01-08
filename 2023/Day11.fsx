@@ -30,6 +30,37 @@ let lines input =
           [ for col, char in line |> Seq.indexed -> ((row, col), char |> toSpace) ] ]
     |> List.collect id
 
+let expand universe =
+    let isEmpty = Array.forall (fun s -> s = Empty)
+    
+    let rows = Array2D.length2 universe
+    let cols = Array2D.length1 universe
+    
+    let emptyRowIndexes =
+        [ for i in 0 .. (rows - 1) -> if (isEmpty universe[i, *]) then Some i else None ]
+        |> List.choose id
+        |> List.mapi (+)
+
+    let emptyColIndexes =
+        [ for i in 0 .. (cols - 1) -> if (isEmpty universe[*, i]) then Some i else None ]
+        |> List.choose id
+        |> List.mapi (+)
+
+    let newRowCount = rows + emptyRowIndexes.Length
+    let newColCount = cols + emptyColIndexes.Length
+    
+    let expandedUniverse = Array2D.create newColCount newRowCount Empty
+    
+    for i in 0..newRowCount-1 do
+        if (emptyRowIndexes |> List.contains i) then printfn "Empty"
+        else printfn "%A" expandedUniverse[i, *]
+    // for row, line in (input |> Seq.indexed) do
+    //     for col, char in line |> Seq.indexed do
+    //         Array2D.set array row col (char |> parse)
+            
+    // for i in 0..(Array2D.)
+    expandedUniverse
+
 let mkUniverse input =
     let universe = Array2D.zeroCreate 10 10
     
@@ -41,38 +72,28 @@ let mkUniverse input =
 
 let isEmpty = Array.forall (fun s -> s = Empty)
 
-let expand universe : Universe =
-    let colCount = universe |> Array2D.length1
-    let rowCount = universe |> Array2D.length2
+let universe = mkUniverse example
 
-    // create col row value
-    // todo: get index of empty rows & cols
-    let newUniverse = Array2D.create 13 12 Empty
-    //
-    // for row in 0..rowCount do
-    //     let isEmpty = universe[row, *] |> Array.forall (fun s -> s = Empty)
-    //     ()
-        
-// let x =
-//     [ for i in 0 .. (Array2D.length2 universe - 1) -> if (isEmpty universe[i, *]) then Some i else None ]
-//     |> List.choose id
-//     |> List.mapi (+)
-//
-// let y =
-//     [ for i in 0 .. (Array2D.length1 universe - 1) -> if (isEmpty universe[*, i]) then Some i else None ]
-//     |> List.choose id
-//     |> List.mapi (+)
-    newUniverse 
+let rows = Array2D.length2 universe
+let cols = Array2D.length1 universe
 
-let universe = mkUniverse example |> expand
+let emptyRowIndexes =
+    [ for i in 0 .. (rows - 1) -> if (isEmpty universe[i, *]) then Some i else None ]
+    |> List.choose id
+    |> List.mapi (+)
 
-let rowCount = universe |> Array2D.length2
-let colCount = universe |> Array2D.length1
+let emptyColIndexes =
+    [ for i in 0 .. (cols - 1) -> if (isEmpty universe[*, i]) then Some i else None ]
+    |> List.choose id
+    |> List.mapi (+)
 
-// for row in 0..9 do
-//     let isEmpty = universe[row, *] |> Array.forall (fun s -> s = Empty)
-//     printfn $"""Row %d{row} %A{if isEmpty then "empty" else "not empty"}"""
-//
-// for col in 0..9 do
-//     let isEmpty = universe[*, col] |> Array.forall (fun s -> s = Empty)
-//     printfn $"""Col %d{col} %A{if isEmpty then "empty" else "not empty"}"""
+let newRowCount = rows + emptyRowIndexes.Length
+let newColCount = cols + emptyColIndexes.Length
+
+let expandedUniverse = Array2D.create newColCount newRowCount Empty
+
+// for i in 0..newRowCount-1 do
+//     if (emptyRowIndexes |> List.contains i) then printfn "Empty Row !"
+//     else printfn "%A" expandedUniverse[i, *]
+    
+
