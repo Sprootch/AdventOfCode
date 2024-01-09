@@ -7,6 +7,7 @@
         <IsTestProject>true</IsTestProject>
         <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
         <LangVersion>8.0</LangVersion>
+        <RootNamespace>AOC2023</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -30,6 +31,7 @@
         <Compile Include="Day2.fs" />
         <None Include="Day3.fsx" />
         <Compile Include="Day4.fs" />
+        <None Include="Day7_2.fsx" />
         <None Include="Day11.fsx" />
         <None Include="Day8.fsx" />
         <None Include="Day6.fsx" />
