@@ -12,11 +12,13 @@ let example =
              7pqrstsixteen"""
         .Split("\n")
 
-let processLine(str: string) =
+let getCalibration(str: string) =
     let digits = str |> Seq.filter Char.IsDigit
     let first = digits |> Seq.head
     let last = digits |> Seq.last
-    $"{first}{last}" |> int
+    let i = $"{first}{last}" |> int
+    printfn "%s | %d" str i 
+    i
 
 let replaceDigits(line: string) =
     let folder (str: string) (mat: Match) =
@@ -37,12 +39,13 @@ let replaceDigits(line: string) =
     let matches =
         Regex.Matches(line, "(one|two|three|four|five|six|seven|eight|nine)", RegexOptions.Multiline)
 
+    printf "%s | " line
     matches |> Seq.fold folder line
 
 let solve(input: string array) =
-    input |> Array.map replaceDigits |> Array.map processLine |> Array.sum
+    input |> Array.map (replaceDigits >> getCalibration) |> Array.sum
 
-let input = File.ReadAllLines(Path.Combine("2023", "Input", "day1.txt"))
+let result = File.ReadAllLines(Path.Combine("2023", "Input", "day1.txt")) |> solve
 // solve input
 
 // let s = "fx3"
