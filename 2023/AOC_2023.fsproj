@@ -28,6 +28,7 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
         <Compile Include="Day1.fs" />
+        <None Include="Day1.fsx" />
         <Compile Include="Day2.fs" />
         <None Include="Day3.fsx" />
         <Compile Include="Day4.fs" />
