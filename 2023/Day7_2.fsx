@@ -85,7 +85,6 @@ let compareCard(card1, card2) =
         | Number n -> n
         | Joker -> 1
 
-    // TODO: Change logic, Joker is weaker, not first.
     compare (card2 |> cardStrength) (card1 |> cardStrength)
 
 let comparer hand1 hand2 =
@@ -103,11 +102,14 @@ let comparer hand1 hand2 =
     let strength2 = hand2.Type |> handStrength
 
     if (strength1 = strength2) then
-        // TODO: Update this logic
-        hand1.Cards
-        |> List.zip hand2.Cards
-        |> List.map compareCard
-        |> List.find ((<>) 0)
+        // Not sure why we have the same hand twice here...
+        if hand1 = hand2 then
+            1
+        else
+            hand1.Cards
+            |> List.zip hand2.Cards
+            |> List.map compareCard
+            |> List.find ((<>) 0)
     else if (strength1 > strength2) then
         1
     else
@@ -133,4 +135,4 @@ let solve input =
 // solve example
 
 let input = File.ReadAllLines(Path.Combine("2023", "Input", "day7.txt"))
-input |> Array.map createHand |> Array.sortWith comparer
+solve input
