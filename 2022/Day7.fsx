@@ -35,27 +35,11 @@ let rec calcDirSize size (directory: Directory) =
         // size + (calcFileSize directory.Files)
     | head :: tail ->
         printfn "Child dir is %s" head.Name
-        calcDirSize newSize head
-
-
-        // let dirSize = calcDirSize size head
-        // let fileSize = calcFileSize head.Files
-        // let totalSize = dirSize + fileSize
-        // printfn "size is : %d" totalSize
-        // tail |> (List.fold calcDirSize) (totalSize)
-
-// let calculateDirectorySize directory =
-//     let rec innerCalc directories size =
-//         printfn $"Size: {size}"
-//
-//         match directories with
-//         | [] -> size
-//         | head :: tail ->
-//             let value = head.Files |> calcFileSize
-//             printfn $"{head.Name}: Size = {value}"
-//             (innerCalc head.Directories (value + size)) + (innerCalc tail size)
-//
-//     innerCalc directory.Directories (calcFileSize directory.Files)
+        let xx = [ for i in tail do calcDirSize 0 i]
+        let a = xx |> List.sum
+        printfn "a = %d" a
+        let x = calcDirSize newSize head
+        x + a
 
 let e =
     { Name = "e"
@@ -85,6 +69,7 @@ let d =
           { Name = "d.ext"; Size = 5626152 }
           { Name = "k"; Size = 7214296 } ] }
 
+d |> calcDirSize 0
 // d |> calculateDirectorySize
 
 
@@ -93,6 +78,7 @@ let root =
       Directories = [ a; d ]
       Files = [ { Name = "b.txt"; Size = 14848514 }; { Name = "c.dat"; Size = 8504156 } ] }
 
+root |> calcDirSize 0
 // current 48380581
 // expected 48381165
 
