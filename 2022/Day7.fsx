@@ -61,3 +61,8 @@ let root =
       Files = [ { Name = "b.txt"; Size = 14848514 }; { Name = "c.dat"; Size = 8504156 } ] }
 
 root |> calculateDirectorySize
+
+[ a; e; d; root ]
+|> List.map calculateDirectorySize
+|> List.filter (fun size -> size <= 100000)
+|> List.sum
