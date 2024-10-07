@@ -12,6 +12,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2022", "2022", "{ABEC99FC-1
 		2022\Day7.fsx = 2022\Day7.fsx
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Input", "Input", "{4A151948-1EEC-48DF-88C2-384075471C21}"
+	ProjectSection(SolutionItems) = preProject
+		2022\Input\day7.txt = 2022\Input\day7.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,5 +33,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5746837F-626A-4759-A362-A0FBA0D858BC} = {9DD4703A-CBF6-4F1E-AD16-037B8233AA09}
+		{4A151948-1EEC-48DF-88C2-384075471C21} = {ABEC99FC-113E-4BEF-897D-9C70BCEBC753}
 	EndGlobalSection
 EndGlobal

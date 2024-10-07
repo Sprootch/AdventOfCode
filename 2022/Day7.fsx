@@ -1,3 +1,6 @@
+open System
+open System.IO
+
 type File = { Name: string; Size: int }
 
 type Directory =
@@ -20,10 +23,28 @@ let addFile (file: File) (directory: Directory) =
     { directory with
         Files = (file :: directory.Files) }
 
-let calcFileSize files = files |> List.sumBy (_.Size)
+let isInt (str:string) =
+  let isInt, _ = Int32.TryParse str
+  isInt
+
+let processCommand (command:string) =
+    match command.Split(' ') with
+    | [| "$"; args |] ->
+      printfn $"command : %s{args}"
+    | [| "$"; args ; param |] ->
+      printfn $"command : %s{args} %s{param}"
+    | [| "dir"; directory |] ->
+      printfn $"dir : %s{directory}"
+    | [| size; file |] when (size |> isInt) ->
+      printfn $"file: %s{file} (%s{size})"
+    | other ->
+      printfn "%A" other
+
+let txt = File.ReadLines(Path.Combine("2022/Input", "day7.txt"))
+txt |> Seq.iter processCommand
 
 let rec calculateDirectorySize (directory: Directory) : int =
-    let fileSize = calcFileSize directory.Files
+    let fileSize = directory.Files |> List.sumBy (_.Size)
     let subDirSize = directory.Directories |> List.sumBy calculateDirectorySize
     subDirSize + fileSize
 
