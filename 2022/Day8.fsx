@@ -16,8 +16,7 @@ let isVisibleFromUpOrDown row col value =
     let column = getColumn col
     column[0..row-1] |> Array.forall (fun item -> item < value) || column[row + 1 ..] |> Array.forall (fun item -> item < value)
 
-trees |> Array2D.length2;;
 let isVisible row col value =
    isVisibleFromLeftOrRight row col value || isVisibleFromUpOrDown row col value
 
-trees |> Array2D.mapi isVisible
+trees |> Array2D.mapi isVisible |> Seq.cast<bool> |> Seq.filter (fun x -> x = true) |> Seq.length
