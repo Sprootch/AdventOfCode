@@ -1,22 +1,23 @@
 open System.IO
 
 let lines = File.ReadLines(Path.Combine("2022/Input", "day8.txt"))
+
 let trees =
     array2D [ for line in lines -> [ for tree in line -> tree |> string |> int ] ]
 
-printfn "%A" trees
-
-let isVisibleFromLeftOrRight row col =
-    let value = trees[row, col]
+let isVisibleFromLeftOrRight row col value =
     trees[row,*][0..col-1] |> Array.forall (fun item -> item < value) || trees[row, *][col + 1 ..] |> Array.forall (fun item -> item < value)
 
-let isVisible = isVisibleFromLeftOrRight 1 3
+let getColumn idx =
+    let j = trees |> Array2D.length1
+    [| for i in 0..j-1 -> trees[i, idx] |]
 
-// columns
-let x = [ for i in 0..4 -> trees[i, 0] ]
+let isVisibleFromUpOrDown row col value =
+    let column = getColumn col
+    column[0..row-1] |> Array.forall (fun item -> item < value) || column[row + 1 ..] |> Array.forall (fun item -> item < value)
 
-// [ for row in trees -> [ for col in row -> printfn "%A"col ] ]
-// map |> List.iteri (fun i row -> printfn $"row %d{i} is %A{row}")
+trees |> Array2D.length2;;
+let isVisible row col value =
+   isVisibleFromLeftOrRight row col value || isVisibleFromUpOrDown row col value
 
-// let e = map |> List.length
-// [1..e-2] |> List.iter (fun i -> printfn $"%A{map[i]}")
+trees |> Array2D.mapi isVisible
