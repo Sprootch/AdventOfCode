@@ -1,18 +1,17 @@
 open System.IO
 
-let txt = File.ReadLines(Path.Combine("2022/Input", "day8.txt"))
-// let trees = [| for line in txt -> [| for tree in line -> tree |> string |> int |] |]
+let lines = File.ReadLines(Path.Combine("2022/Input", "day8.txt"))
 let trees =
-    array2D [ for line in txt -> [ for tree in line -> tree |> string |> int ] ]
+    array2D [ for line in lines -> [ for tree in line -> tree |> string |> int ] ]
 
 printfn "%A" trees
 
-let isVisible row col treeHeight =
-    let allExceptMe = trees[row,*]|> List.filter (fun )//TODO
+let isVisibleFromLeftOrRight row col =
+    let value = trees[row, col]
+    trees[row,*][0..col-1] |> Array.forall (fun item -> item < value) || trees[row, *][col + 1 ..] |> Array.forall (fun item -> item < value)
 
-    allExceptMe |> List.forall (fun height -> height < treeHeight)
+let isVisible = isVisibleFromLeftOrRight 1 3
 
-trees |> Array2D.mapi (fun row col value -> $"({row}, {col} = {value}")
 // columns
 let x = [ for i in 0..4 -> trees[i, 0] ]
 
