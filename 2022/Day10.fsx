@@ -5,8 +5,6 @@ let lines = File.ReadLines(Path.Combine("2022/Input", "day10.txt"))
 type Cpu = { CycleCount: int; Register: int }
 
 let scanner (cpu: Cpu) (line: string) =
-    // printfn $"{cpu.CycleCount} : {cpu.Register}"
-    // printfn $"{line}"
     match line.Split(' ') with
     | [| "addx"; count |] ->
         let value = count |> int
@@ -34,5 +32,3 @@ let instructions = lines |> Seq.scan scanner cpu
 [ 20; 60; 100; 140; 180; 220 ]
 |> List.map (fun cycle -> instructions |> signalStrength cycle)
 |> List.sum
-
-instructions |> find 220
