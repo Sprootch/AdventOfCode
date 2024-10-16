@@ -17,17 +17,16 @@ let getColumn idx =
     let j = trees |> Array2D.length1
     [| for i in 0 .. j - 1 -> trees[i, idx] |]
 
-let myTakeWhile state value =
-    let contains = (state |> List.exists (fun item -> item >= value))
-    if contains then
-        state
-    else
-        value :: state
+let myTakeWhile refValue state value =
+    let contains = (state |> List.exists (fun item -> item >= refValue))
+    if contains then state else value :: state
 
 let calcScenicScore row col value =
     if isOnEdge row col then
-        (0, 0, 0, 0)
+        0
     else
+        let myTakeWhile = myTakeWhile value
+
         let left =
             trees[row, *][0 .. col - 1]
             |> Array.rev
@@ -54,13 +53,6 @@ let calcScenicScore row col value =
             |> List.length
             |> zeroMeansOne
 
-        (up, left, right, down)
+        up * left * right * down
 
-trees |> Array2D.mapi calcScenicScore
-
-
-let col = 2
-let row = 1
-let value = 5
-
-(getColumn col)[row + 1 ..] |> Array.fold myTakeWhile list.Empty
+trees |> Array2D.mapi calcScenicScore |> Seq.cast<int> |> Seq.max
