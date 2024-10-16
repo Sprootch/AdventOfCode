@@ -13,24 +13,54 @@ let isOnEdge row col =
 
 let zeroMeansOne value = if value = 0 then 1 else value
 
+let getColumn idx =
+    let j = trees |> Array2D.length1
+    [| for i in 0 .. j - 1 -> trees[i, idx] |]
+
+let myTakeWhile state value =
+    let contains = (state |> List.exists (fun item -> item >= value))
+    if contains then
+        state
+    else
+        value :: state
+
 let calcScenicScore row col value =
     if isOnEdge row col then
-        0
+        (0, 0, 0, 0)
     else
         let left =
             trees[row, *][0 .. col - 1]
             |> Array.rev
-            |> Array.takeWhile (fun t -> t < value)
-            |> Array.length
+            |> Array.fold myTakeWhile list.Empty
+            |> List.length
             |> zeroMeansOne
 
         let right =
             trees[row, *][col + 1 ..]
-            |> Array.takeWhile (fun t -> t < value)
-            |> Array.length
+            |> Array.fold myTakeWhile list.Empty
+            |> List.length
             |> zeroMeansOne
 
-        left * right
+        let up =
+            (getColumn col)[.. row - 1]
+            |> Array.rev
+            |> Array.fold myTakeWhile list.Empty
+            |> List.length
+            |> zeroMeansOne
 
-// let right = trees[3, *][2 + 1 ..] |> Array.takeWhile (fun t -> t < 5)
+        let down =
+            (getColumn col)[row + 1 ..]
+            |> Array.fold myTakeWhile list.Empty
+            |> List.length
+            |> zeroMeansOne
+
+        (up, left, right, down)
+
 trees |> Array2D.mapi calcScenicScore
+
+
+let col = 2
+let row = 1
+let value = 5
+
+(getColumn col)[row + 1 ..] |> Array.fold myTakeWhile list.Empty
