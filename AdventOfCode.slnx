@@ -1,0 +1,23 @@
+<Solution>
+  <Folder Name="/2021/">
+    <File Path="2021\Day1.fsx" />
+  </Folder>
+  <Folder Name="/2021/Input/">
+    <File Path="2021\Input\day1.txt" />
+  </Folder>
+  <Folder Name="/2022/">
+    <File Path="2022\Day7.fsx" />
+    <File Path="2022\Day8.fsx" />
+    <File Path="2022\Day8_part2.fsx" />
+    <File Path="2022\Day10.fsx" />
+  </Folder>
+  <Folder Name="/2022/Input/">
+    <File Path="2022\Input\day7.txt" />
+    <File Path="2022\Input\day8.txt" />
+    <File Path="2022\Input\day8_part2.txt" />
+    <File Path="2022\Input\day10.txt" />
+  </Folder>
+  <Folder Name="/2023/">
+    <Project Path="2023\AOC_2023.fsproj" Type="Classic F#" />
+  </Folder>
+</Solution>

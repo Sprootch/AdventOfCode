@@ -4,13 +4,17 @@ let lines = File.ReadLines(Path.Combine("2021/Input", "day3.txt"))
 
 let getColumn idx array =
     let j = array |> Array2D.length1
-    // todo yield ?
-    [| for i in 0 .. j - 1 -> array[i, idx] |]
+    seq { for i in 0 .. j - 1 -> array[i, idx] }
 
-let trees = array2D [ for line in lines -> [ for tree in line -> tree ] ]
+let bytes = array2D [ for line in lines -> [ for bit in line -> bit ] ]
 
-let gamma =
-    // todo 4
-    [ for i in 0..4 -> trees |> getColumn i |> Array.countBy id |> Array.maxBy snd |> fst ]
+let compute (pick: (char * int) seq -> char * 'a) =
+    let size = (bytes |> Array2D.length2) - 1
+
+    [ for i in 0..size -> bytes |> getColumn i |> Seq.countBy id |> pick |> fst ]
     |> System.String.Concat
     |> (fun binary -> System.Convert.ToInt32(binary, 2))
+
+let gamma = compute (Seq.maxBy snd)
+let epsilon = compute (Seq.minBy snd)
+gamma * epsilon
