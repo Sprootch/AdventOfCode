@@ -26,12 +26,14 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2021", "2021", "{F1BB6477-664F-48C2-8D30-2B103D73BA37}"
 	ProjectSection(SolutionItems) = preProject
 		2021\Day1.fsx = 2021\Day1.fsx
+		2021\Day2.fsx = 2021\Day2.fsx
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Input", "Input", "{7694B7A8-D8CC-46A8-87F7-D0C35412C06E}"
 	ProjectSection(SolutionItems) = preProject
 		2021\Input\day1.txt = 2021\Input\day1.txt
 		2021\Input\day1_2.txt = 2021\Input\day1_2.txt
+		2021\Input\day2.txt = 2021\Input\day2.txt
 	EndProjectSection
 EndProject
 Global
