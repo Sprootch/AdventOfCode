@@ -31,6 +31,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Input", "Input", "{7694B7A8-D8CC-46A8-87F7-D0C35412C06E}"
 	ProjectSection(SolutionItems) = preProject
 		2021\Input\day1.txt = 2021\Input\day1.txt
+		2021\Input\day1_2.txt = 2021\Input\day1_2.txt
 	EndProjectSection
 EndProject
 Global
