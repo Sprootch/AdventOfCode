@@ -28,6 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2021", "2021", "{F1BB6477-6
 		2021\Day1.fsx = 2021\Day1.fsx
 		2021\Day2.fsx = 2021\Day2.fsx
 		2021\Day3.fsx = 2021\Day3.fsx
+		2021\Day3_2.fsx = 2021\Day3_2.fsx
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Input", "Input", "{7694B7A8-D8CC-46A8-87F7-D0C35412C06E}"
@@ -37,6 +38,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Input", "Input", "{7694B7A8
 		2021\Input\day2.txt = 2021\Input\day2.txt
 		2021\Input\day2_2.txt = 2021\Input\day2_2.txt
 		2021\Input\day3.txt = 2021\Input\day3.txt
+		2021\Input\day3_2.txt = 2021\Input\day3_2.txt
 	EndProjectSection
 EndProject
 Global
